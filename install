@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -e
+
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+NC="\033[0m"
+
+echo -e ${GREEN}Installing ${RED}forgeup${GREEN} to ${RED}/usr/local/bin${GREEN}!${NC}
+
+FORGEUP='#!/usr/bin/env bash
+set -e
+
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+NC="\033[0m"
+
+if [[ "$1" == *foundry* ]]
+then
+    REPO=$1
+    BRANCH=${2-master}
+else
+    REPO="gakonst/foundry"
+    BRANCH=${1-master}
+fi
+
+echo -e ${GREEN}Updating ${RED}forge${GREEN} to ${RED}${REPO}${GREEN} at branch ${RED}${BRANCH}${GREEN}!${NC}
+
+cargo install --git https://github.com/gakonst/foundry --branch ${BRANCH} --bin forge --locked'
+
+BINARY="/usr/local/bin/forgeup"
+echo "$FORGEUP" > $BINARY
+chmod +x $BINARY
