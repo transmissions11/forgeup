@@ -28,7 +28,7 @@ To install a **fork's main branch** (in this case `transmissions11/foundry`'s ma
 forgeup transmissions11/foundry
 ```
 
-To install a **specific branch in a fork** (in this case the `foundry` branch's latest commit in `transmissions11/dapptools`):
+To install a **specific branch in a fork** (in this case the `foundry` branch's latest commit in `transmissions11/foundry`):
 
 ```sh
 forgeup transmissions11/foundry patch-10
