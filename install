@@ -14,7 +14,7 @@ GREEN="\033[0;32m"
 RED="\033[0;31m"
 NC="\033[0m"
 
-if [[ "$1" == *foundry* ]]
+if [[ "$1" == *foundry* || "$1" == *dapptools-rs*  ]]
 then
     REPO=$1
     BRANCH=${2-master}
@@ -25,7 +25,7 @@ fi
 
 echo -e ${GREEN}Updating ${RED}forge${GREEN} to ${RED}${REPO}${GREEN} at branch ${RED}${BRANCH}${GREEN}!${NC}
 
-cargo install --git https://github.com/${REPO} --branch ${BRANCH} --bin forge --locked'
+cargo install --git https://github.com/${REPO} --bins --branch ${BRANCH} --locked --force'
 
 BINARY="/usr/local/bin/forgeup"
 echo "$FORGEUP" > $BINARY
