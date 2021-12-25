@@ -1,0 +1,73 @@
+#!/bin/bash
+
+
+version=0.1.0
+tar=$HOME/eth-foundry/foundry_0.1.0.tar.gz
+extract=$HOME/eth-foundry
+
+
+
+if [ "$1" = "-y" ]; then
+  noninteractive=y
+  shift
+fi
+
+bootstrap='[[ -f ~/.foundry/profile ]] && source ~/.foundry/profile'
+if [ -f ~/.bashrc ]; then
+  pre15=$(grep --fixed-strings --count 'source "$bash_script"' ~/.bashrc)
+  post15=$(grep --fixed-strings --count "$bootstrap" ~/.bashrc)
+else
+  pre15=0
+  post15=0
+fi
+
+set -o errexit # not for grep
+
+
+# download and install
+rm -rf $tar $extract/target
+mkdir -p $extract/
+wget https://github.com/sambacha/foundry/releases/download/v0.0.1/foundry_0.1.0.tar.gz -O $tar
+tar --extract --file $tar --directory $extract
+
+echo '------------------------------------------------'
+echo Installing Foundry $version
+echo
+#make --directory=$extract/$(ls $extract) install "$@"
+chmod +x $extract/target/release/forge
+$extract/target/release/forge --help
+echo
+echo
+
+# Setup bootstrap in ~/.bashrc
+if ! type -P Foundry &>/dev/null && [ $post15 -eq 0 ]; then
+  cat <<EOF
+Bash Completions in '~/.bashrc':
+    $bootstrap
+Should that line be automatically added to the end of '~/.bashrc' (y/n)?
+EOF
+  if [ -n "$noninteractive" ]; then
+    answer=y
+  else
+    read answer
+    echo
+  fi
+  if [ "$answer" = y ]; then
+    printf "\n%s\n" "$bootstrap" >>~/.bashrc
+    echo "Added '$bootstrap' to ~/.bashrc"
+  else
+    cat <<EOF
+You should manually add Foundry bootstrap to '~/.bashrc':
+    $bootstrap
+EOF
+  fi
+
+  cat <<EOF
+Foundry can now be updated by executing the following command:
+    $ Foundry replace Foundry $version
+EOF
+fi
+
+echo "Restart terminal to complete Foundry $version installation"
+
+exit 0

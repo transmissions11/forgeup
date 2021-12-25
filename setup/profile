@@ -1,0 +1,18 @@
+#!/bin/bash
+#-*-Shell-Script-*-
+# v2021.12
+
+export FOUNDRY_USER=${FOUNDRY_USER:-$HOME/.foundry/}
+export FOUNDRY_DIR=${FOUNDRY_DIR:-${FOUNDRY_USER%%/}/programs}
+export FOUNDRY_DIR_HOME=${FOUNDRY_DIR_HOME:-$FOUNDRY_DIR/foundry}
+
+export PATH="$PATH:$FOUNDRY_DIR_HOME/bin"
+
+[[ -d "$FOUNDRY_USER" ]] && {
+  for forge_script in $(find "$FOUNDRY_USER" -mindepth 1 -maxdepth 1 \
+                              -type f -executable -name '*\.sh')
+  do
+    source "$forge_script"
+  done
+  unset forge_script
+}
