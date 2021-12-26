@@ -5,7 +5,7 @@ Update or revert to a specific [Foundry](https://github.com/gakonst/foundry) com
 ## Installing
 
 ```sh
-curl http://xn--2-kmb.com/forgeup/install | bash
+curl https://raw.githubusercontent.com/transmissions11/forgeup/main/install | bash
 ```
 
 ## Using
