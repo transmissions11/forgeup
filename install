@@ -25,7 +25,30 @@ fi
 
 echo -e ${GREEN}Updating ${RED}forge${GREEN} to ${RED}${REPO}${GREEN} at branch ${RED}${BRANCH}${GREEN}!${NC}
 
-cargo install --git https://github.com/${REPO} --bins --branch ${BRANCH} --locked --force'
+
+FOUNDRY_PATH="$HOME/.foundry"
+REPO_PATH="$FOUNDRY_PATH/${REPO}"
+mkdir -p $FOUNDRY_PATH
+
+# if the repo path exists, just move to it, git pull, and checkout the branch
+# then cargo install local
+if [ -d $REPO_PATH ]
+then
+    cd $REPO_PATH
+    git pull
+    git checkout ${BRANCH}
+    cargo install --path ./cli --bins --locked --force
+else
+    # repo path didnt exist, grab the author from the repo,
+    # make a directory in .foundry, cd to it, clone and install
+    IFS="/" read -ra AUTHOR <<< "$REPO"
+    mkdir -p "$FOUNDRY_PATH/$AUTHOR"
+    cd "$FOUNDRY_PATH/$AUTHOR"
+    git clone https://github.com/${REPO}
+    cd $REPO_PATH
+    git checkout ${BRANCH}
+    cargo install --path ./cli --bins --locked --force
+fi'
 
 BINARY="/usr/local/bin/forgeup"
 echo "$FORGEUP" > $BINARY
