@@ -51,5 +51,5 @@ else
 fi'
 
 BINARY="/usr/local/bin/forgeup"
-echo "$FORGEUP" > $BINARY
+echo "$FORGEUP" | tee $BINARY >/dev/null
 chmod +x $BINARY
