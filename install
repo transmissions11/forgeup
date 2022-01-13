@@ -35,8 +35,8 @@ mkdir -p $FOUNDRY_PATH
 if [ -d $REPO_PATH ]
 then
     cd $REPO_PATH
-    git pull
     git checkout ${BRANCH}
+    git pull
     cargo install --path ./cli --bins --locked --force
 else
     # repo path didnt exist, grab the author from the repo,
