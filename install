@@ -61,7 +61,7 @@ echo "$FORGEUP" | tee "$BINARY" >/dev/null
 chmod +x $BINARY
 
 # Add the forge directory to the path and source it
-echo "export PATH=$PATH:$FORGE_DIR" | tee -a ~/.profile >/dev/null
+echo "export PATH=$PATH:$FORGE_DIR" | tee -a $HOME/.profile >/dev/null
 
 # Source the updated profile
-source ~/.profile
+source $HOME/.profile
