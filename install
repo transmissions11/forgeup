@@ -68,14 +68,13 @@ chmod +x $BINARY
 
 # Store the correct profile file (i.e. .profile for bash or .zshrc for ZSH)
 case $SHELL in
-*/zsh) 
-    echo -e ${GREEN}Detected your preferred shell is ${RED}zsh${GREEN}, adding ${RED}forgeup${GREEN} to ${RED}.zshrc${GREEN}. Please run ${RED}source \~/.zshrc${GREEN} after this script runs, or start a new terminal session to use ${RED}forgeup${GREEN}.${NC}
+*/zsh)
     PROFILE=$HOME/.zshrc
+    PREF_SHELL=zsh
     ;;
 */bash)
-    echo -e ${GREEN}Detected your preferred shell is ${RED}bash${GREEN}, adding ${RED}forgeup${GREEN} to ${RED}.profile${GREEN}.
     PROFILE=$HOME/.profile
-    source $PROFILE
+    PREF_SHELL=bash
     ;;
 *)
     echo -e ${RED}Error: ${GREEN}could not detect shell, please manually add ${RED}$FORGE_DIR${GREEN} to your ${RED}PATH${GREEN} variable!${NC}
@@ -84,11 +83,8 @@ esac
 
 # Only add the forgeup directory to profile if it isn't in path
 if [[ ":$PATH:" != *":$HOME/.forgeup:"* ]]; then
-    # Add the forgeup directory to the path and source it
+    # Add the forgeup directory to the path and ensure the old PATH variables remain
     echo "export PATH=\$PATH:$FORGE_DIR" >> $PROFILE
 fi
 
-# Source the updated profile if we are in bash
-if [[ "$SHELL" == *"bash"* ]]; then
-    source $PROFILE
-fi
+echo -e ${GREEN}Detected your preferred shell is ${RED}${PREF_SHELL}${GREEN}, added ${RED}forgeup${GREEN} to PATH. Please run ${RED}source ${PROFILE}${GREEN} after this script runs, or start a new terminal session to use ${RED}forgeup${GREEN}.${NC}
