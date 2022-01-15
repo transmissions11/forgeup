@@ -6,7 +6,6 @@ Update or revert to a specific [Foundry](https://github.com/gakonst/foundry) com
 
 ```sh
 curl https://raw.githubusercontent.com/transmissions11/forgeup/main/install | bash
-source $HOME/.profile # Register the forgeup alias in the current session.
 ```
 
 ## Using
