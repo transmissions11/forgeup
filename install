@@ -14,6 +14,12 @@ GREEN="\033[0;32m"
 RED="\033[0;31m"
 NC="\033[0m"
 
+if ! command -v cargo &> /dev/null
+then
+    echo -e ${RED}Error: ${GREEN}you do not have ${RED}cargo${GREEN}, please install it before using ${RED}forgeup${GREEN}!${NC}
+    exit
+fi
+
 if [[ "$1" == *foundry* || "$1" == *dapptools-rs*  ]]
 then
     REPO=$1
@@ -63,16 +69,17 @@ chmod +x $BINARY
 # Store the correct profile file (e.g. .profile for bash or .zshrc for ZSH)
 case $SHELL in
 */zsh) 
-   echo "Detected your preferred shell is ZSH, adding forgeup to '.zshrc'. Please run 'source ~/.zshrc' after this script runs, or start a new terminal session to use forgeup."
-   PROFILE=$HOME/.zshrc
-   ;;
+    echo -e ${GREEN}Detected your preferred shell is ${RED}zsh${GREEN}, adding ${RED}forgeup${GREEN} to ${RED}.zshrc${GREEN}. Please run ${RED}source \~/.zshrc${GREEN} after this script runs, or start a new terminal session to use ${RED}forgeup${GREEN}.${NC}
+    PROFILE=$HOME/.zshrc
+    ;;
 */bash)
-   PROFILE=$HOME/.profile
-   source $PROFILE
-   ;;
+    echo -e ${GREEN}Detected your preferred shell is ${RED}bash${GREEN}, adding ${RED}forgeup${GREEN} to ${RED}.profile${GREEN}.
+    PROFILE=$HOME/.profile
+    source $PROFILE
+    ;;
 *)
-   echo "Error: could not detect shell, please manually add $FORGE_DIR to your PATH variable!"
-   exit 1
+    echo -e ${RED}Error: ${GREEN}could not detect shell, please manually add ${RED}$FORGE_DIR${GREEN} to your ${RED}PATH${GREEN} variable!${NC}
+    exit 1
 esac
 
 # Only add the forgeup directory to profile if it isn't in path
@@ -83,5 +90,5 @@ fi
 
 # Source the updated profile if we are in bash
 if [[ "$SHELL" == *"bash"* ]]; then
-   source $PROFILE
+    source $PROFILE
 fi
