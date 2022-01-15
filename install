@@ -14,6 +14,12 @@ GREEN="\033[0;32m"
 RED="\033[0;31m"
 NC="\033[0m"
 
+if ! command -v cargo &> /dev/null
+then
+    echo -e ${RED}Error: ${GREEN}you do not have ${RED}cargo${GREEN}, please install it before using ${RED}forgeup${GREEN}!${NC}
+    exit 1
+fi
+
 if [[ "$1" == *foundry* || "$1" == *dapptools-rs*  ]]
 then
     REPO=$1
@@ -60,14 +66,25 @@ mkdir -p $FORGE_DIR
 echo "$FORGEUP" > $BINARY
 chmod +x $BINARY
 
-# Source the profile to make sure we have an up-to-date PATH
-source $HOME/.profile
+# Store the correct profile file (i.e. .profile for bash or .zshrc for ZSH)
+case $SHELL in
+*/zsh)
+    PROFILE=$HOME/.zshrc
+    PREF_SHELL=zsh
+    ;;
+*/bash)
+    PROFILE=$HOME/.profile
+    PREF_SHELL=bash
+    ;;
+*)
+    echo -e ${RED}Error: ${GREEN}could not detect shell, please manually add ${RED}$FORGE_DIR${GREEN} to your ${RED}PATH${GREEN} variable!${NC}
+    exit 1
+esac
 
 # Only add the forgeup directory to profile if it isn't in path
 if [[ ":$PATH:" != *":$HOME/.forgeup:"* ]]; then
-    # Add the forgeup directory to the path and source it
-    echo "export PATH=$PATH:$FORGE_DIR" >> $HOME/.profile
+    # Add the forgeup directory to the path and ensure the old PATH variables remain
+    echo "export PATH=\$PATH:$FORGE_DIR" >> $PROFILE
 fi
 
-# Source the updated profile
-source $HOME/.profile
+echo -e ${GREEN}Detected your preferred shell is ${RED}${PREF_SHELL}${GREEN}, added ${RED}forgeup${GREEN} to PATH. Please run ${RED}source ${PROFILE}${GREEN} after this script runs, or start a new terminal session to use ${RED}forgeup${GREEN}.${NC}
