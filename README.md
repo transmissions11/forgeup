@@ -1,6 +1,6 @@
 # forgeup
 
-Update or revert to a specific [Foundry](https://github.com/gakonst/foundry) commit with ease.
+Update or revert to a specific [Foundry](https://github.com/gakonst/foundry) branch with ease.
 
 ## Installing
 
