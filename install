@@ -60,8 +60,14 @@ touch $BINARY >/dev/null
 echo "$FORGEUP" > $BINARY
 chmod +x $BINARY
 
-# Add the forge directory to the path and source it
-echo "export PATH=$PATH:$FORGE_DIR" | tee -a $HOME/.profile >/dev/null
+# Source the updated profile
+source $HOME/.profile
+
+# Only add the forgeup directory to profile if it isn't in path
+if [[ ":$PATH:" != *":$HOME/.forgeup:"* ]]; then
+    # Add the forgeup directory to the path and source it
+    echo "export PATH=$PATH:$FORGE_DIR" >> $HOME/.profile
+fi
 
 # Source the updated profile
 source $HOME/.profile
