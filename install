@@ -51,6 +51,23 @@ else
     cargo install --path ./cli --bins --locked --force
 fi'
 
-BINARY="/usr/local/bin/forgeup"
+# Directory config
+FORGE_DIR="$HOME/.forgeup"
+BINARY="$FORGE_DIR/forgeup"
+
+# Create the .forgeup directory and binary file if it doesn't exist
+mkdir -p $FORGE_DIR
 echo "$FORGEUP" > $BINARY
 chmod +x $BINARY
+
+# Source the profile to make sure we have an up-to-date PATH
+source $HOME/.profile
+
+# Only add the forgeup directory to profile if it isn't in path
+if [[ ":$PATH:" != *":$HOME/.forgeup:"* ]]; then
+    # Add the forgeup directory to the path and source it
+    echo "export PATH=$PATH:$FORGE_DIR" >> $HOME/.profile
+fi
+
+# Source the updated profile
+source $HOME/.profile
