@@ -60,14 +60,28 @@ mkdir -p $FORGE_DIR
 echo "$FORGEUP" > $BINARY
 chmod +x $BINARY
 
-# Source the profile to make sure we have an up-to-date PATH
-source $HOME/.profile
+# Store the correct profile file (e.g. .profile for bash or .zshrc for ZSH)
+case $SHELL in
+*/zsh) 
+   echo "Detected your preferred shell is ZSH, adding forgeup to '.zshrc'. Please run 'source ~/.zshrc' after this script runs, or start a new terminal session to use forgeup."
+   PROFILE=$HOME/.zshrc
+   ;;
+*/bash)
+   PROFILE=$HOME/.profile
+   source $PROFILE
+   ;;
+*)
+   echo "Error: could not detect shell, please manually add $FORGE_DIR to your PATH variable!"
+   exit 1
+esac
 
 # Only add the forgeup directory to profile if it isn't in path
 if [[ ":$PATH:" != *":$HOME/.forgeup:"* ]]; then
     # Add the forgeup directory to the path and source it
-    echo "export PATH=$PATH:$FORGE_DIR" >> $HOME/.profile
+    echo "export PATH=$PATH:$FORGE_DIR" >> $PROFILE
 fi
 
-# Source the updated profile
-source $HOME/.profile
+# Source the updated profile if we are in bash
+if [[ "$SHELL" == *"bash"* ]]; then
+   source $PROFILE
+fi
