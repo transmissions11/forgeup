@@ -17,7 +17,7 @@ NC="\033[0m"
 if ! command -v cargo &> /dev/null
 then
     echo -e ${RED}Error: ${GREEN}you do not have ${RED}cargo${GREEN}, please install it before using ${RED}forgeup${GREEN}!${NC}
-    exit
+    exit 1
 fi
 
 if [[ "$1" == *foundry* || "$1" == *dapptools-rs*  ]]
@@ -66,7 +66,7 @@ mkdir -p $FORGE_DIR
 echo "$FORGEUP" > $BINARY
 chmod +x $BINARY
 
-# Store the correct profile file (e.g. .profile for bash or .zshrc for ZSH)
+# Store the correct profile file (i.e. .profile for bash or .zshrc for ZSH)
 case $SHELL in
 */zsh) 
     echo -e ${GREEN}Detected your preferred shell is ${RED}zsh${GREEN}, adding ${RED}forgeup${GREEN} to ${RED}.zshrc${GREEN}. Please run ${RED}source \~/.zshrc${GREEN} after this script runs, or start a new terminal session to use ${RED}forgeup${GREEN}.${NC}
