@@ -55,8 +55,8 @@ FORGE_DIR="$HOME/.forgeup"
 BINARY="$FORGE_DIR/forgeup"
 
 # Create the .forgeup directory and binary file if it doesn't exist
-mkdir -p $FORGE_DIR >/dev/null
-touch $BINARY >/dev/null
+mkdir -p $FORGE_DIR
+touch $BINARY
 echo "$FORGEUP" > $BINARY
 chmod +x $BINARY
 
