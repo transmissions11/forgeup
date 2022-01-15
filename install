@@ -60,7 +60,7 @@ touch $BINARY
 echo "$FORGEUP" > $BINARY
 chmod +x $BINARY
 
-# Source the updated profile
+# Source the profile to make sure we have an up-to-date PATH
 source $HOME/.profile
 
 # Only add the forgeup directory to profile if it isn't in path
